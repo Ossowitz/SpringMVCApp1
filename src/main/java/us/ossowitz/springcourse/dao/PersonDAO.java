@@ -3,7 +3,8 @@ package us.ossowitz.springcourse.dao;
 import org.springframework.stereotype.Component;
 import us.ossowitz.springcourse.models.Person;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,20 +24,47 @@ public class PersonDAO {
             e.printStackTrace();
         }
 
-
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Person> index() {
+        List<Person> people = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "SELECT * FROM spring_db.person";
+            ResultSet resultSet = statement.executeQuery(SQL);
+
+            while (resultSet.next()) {
+                Person person = new Person();
+
+                person.setId(resultSet.getInt("id"));
+                person.setName(resultSet.getString("name"));
+                person.setEmail(resultSet.getString("email"));
+                person.setAge(resultSet.getInt("age"));
+
+                people.add(person);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return people;
     }
 
     public Person show(int id) {
 //        return people.stream().filter(person -> id == person.getId()).findAny().orElse(null);
+        return null;
     }
 
     public void save(Person person) {
-        person.setId(++PEOPLE_COUNT);
-        people.add(person);
+//        person.setId(++PEOPLE_COUNT);
+//        people.add(person);
     }
 
     public void update(int id, Person updatedPerson) {
@@ -48,6 +76,6 @@ public class PersonDAO {
     }
 
     public void delete(int id) {
-        people.removeIf(person -> id == person.getId());
+//        people.removeIf(person -> id == person.getId());
     }
 }
