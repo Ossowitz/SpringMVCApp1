@@ -9,8 +9,6 @@ import java.util.List;
 
 @Component
 public class PersonDAO {
-    private static int PEOPLE_COUNT;
-
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "postgres";
@@ -63,8 +61,14 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-//        person.setId(++PEOPLE_COUNT);
-//        people.add(person);
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "INSERT INTO spring_db.person VALUES(" + 1 + ",'" + person.getName() + "'," + person.getAge()
+                         + ",'" + person.getEmail() + "')";
+            statement.executeUpdate(SQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update(int id, Person updatedPerson) {
