@@ -120,7 +120,8 @@ public class PersonDAO {
 
     public void delete(int id) {
         String SQL = """
-                DELETE spring_db.person
+                DELETE 
+                FROM spring_db.person
                 WHERE id = ?
                 """;
         try {
