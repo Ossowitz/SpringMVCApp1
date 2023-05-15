@@ -33,9 +33,9 @@ public class PersonDAO {
         List<Person> people = new ArrayList<>();
 
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "SELECT * FROM spring_db.person";
-            ResultSet resultSet = statement.executeQuery(SQL);
+            var statement = connection.createStatement();
+            var SQL = "SELECT * FROM spring_db.person";
+            var resultSet = statement.executeQuery(SQL);
 
             while (resultSet.next()) {
                 Person person = new Person();
@@ -47,7 +47,6 @@ public class PersonDAO {
 
                 people.add(person);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,11 +60,15 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
+        var SQL = "INSERT INTO spring_db.person VALUES(1, ?, ?, ?)";
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "INSERT INTO spring_db.person VALUES(" + 1 + ",'" + person.getName() + "'," + person.getAge()
-                         + ",'" + person.getEmail() + "')";
-            statement.executeUpdate(SQL);
+            var preparedStatement = connection.prepareStatement(SQL);
+
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setInt(2, person.getAge());
+            preparedStatement.setString(3, person.getEmail());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
