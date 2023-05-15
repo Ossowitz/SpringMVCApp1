@@ -110,12 +110,27 @@ public class PersonDAO {
             preparedStatement.setString(1, updatedPerson.getName());
             preparedStatement.setInt(2, updatedPerson.getAge());
             preparedStatement.setString(3, updatedPerson.getEmail());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void delete(int id) {
-//        people.removeIf(person -> id == person.getId());
+        String SQL = """
+                DELETE spring_db.person
+                WHERE id = ?
+                """;
+        try {
+            var preparedStatement = connection.prepareStatement(SQL);
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
