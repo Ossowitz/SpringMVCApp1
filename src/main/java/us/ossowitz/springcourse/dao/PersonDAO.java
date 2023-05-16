@@ -1,5 +1,7 @@
 package us.ossowitz.springcourse.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import us.ossowitz.springcourse.models.Person;
 
@@ -9,75 +11,21 @@ import java.util.List;
 
 @Component
 public class PersonDAO {
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
 
-    private static Connection connection;
+    private final JdbcTemplate jdbcTemplate;
 
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    public PersonDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Person> index() {
-        List<Person> people = new ArrayList<>();
-
-        try {
-            var statement = connection.createStatement();
-            var SQL = "SELECT * FROM spring_db.person";
-            var resultSet = statement.executeQuery(SQL);
-
-            while (resultSet.next()) {
-                Person person = new Person();
-
-                person.setId(resultSet.getInt("id"));
-                person.setName(resultSet.getString("name"));
-                person.setEmail(resultSet.getString("email"));
-                person.setAge(resultSet.getInt("age"));
-
-                people.add(person);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return people;
+        return jdbcTemplate.query("SELECT * FROM spring_db.person", new PersonMapper());
     }
 
     public Person show(int id) {
-        Person person = null;
-        String SQL = """
-                SELECT *
-                FROM spring_db.person
-                WHERE id = ?
-                """;
-        try {
-            var preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, id);
-
-            var resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-
-            person = new Person();
-
-            person.setId(resultSet.getInt("id"));
-            person.setName(resultSet.getString("name"));
-            person.setAge(resultSet.getInt("age"));
-            person.setEmail(resultSet.getString("email"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return person;
+        return jdbcTemplate.query("SELECT * FROM spring_db.person WHERE id = ?", new Object[]{id}, new PersonMapper())
+                .stream().findAny().orElse(null);
     }
 
     public void save(Person person) {
@@ -120,7 +68,7 @@ public class PersonDAO {
 
     public void delete(int id) {
         String SQL = """
-                DELETE 
+                DELETE
                 FROM spring_db.person
                 WHERE id = ?
                 """;
