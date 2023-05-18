@@ -17,6 +17,7 @@ import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 @Configuration
 @ComponentScan("us.ossowitz.springcourse")
@@ -61,9 +62,9 @@ public class SpringConfig implements WebMvcConfigurer {
     public DataSource dataSource() {
         var dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName(environment.getProperty("driver"));
+        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("driver")));
         dataSource.setUrl(environment.getProperty("url"));
-        dataSource.setUsername(environment.getProperty("username"));
+        dataSource.setUsername(environment.getProperty("user_name"));
         dataSource.setPassword(environment.getProperty("password"));
 
         return dataSource;
