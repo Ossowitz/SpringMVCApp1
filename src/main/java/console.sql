@@ -112,13 +112,13 @@ VALUES (1, 1),
 
 SELECT Actor.name, M.name
 FROM Actor
-         JOIN Actor_Movie AM on Actor.actor_id = AM.actor_id
-         JOIN Movie M on M.movie_id = AM.movie_id
+         JOIN Actor_Movie AM ON Actor.actor_id = AM.actor_id
+         JOIN Movie M ON M.movie_id = AM.movie_id
 WHERE Actor.name = 'Harvey Keitel';
 
 SELECT Actor.name, count(Actor.actor_id)
 FROM Actor
-         JOIN Actor_Movie AM on Actor.actor_id = AM.actor_id
-         JOIN Movie M on M.movie_id = AM.movie_id
+         JOIN Actor_Movie AM ON Actor.actor_id = AM.actor_id
+         JOIN Movie M ON M.movie_id = AM.movie_id
 WHERE Actor.name = 'Harvey Keitel'
 GROUP BY Actor.name;
