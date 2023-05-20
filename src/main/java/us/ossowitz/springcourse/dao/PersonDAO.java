@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import us.ossowitz.springcourse.models.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component()
 public class PersonDAO {
@@ -20,6 +21,11 @@ public class PersonDAO {
 
     public List<Person> index() {
         return jdbcTemplate.query("SELECT * FROM spring_db.person", new BeanPropertyRowMapper<>(Person.class));
+    }
+
+    public Optional<Person> show(String email) {
+        return jdbcTemplate.query("SELECT * FROM spring_db.person WHERE email=?", new Object[]{email},
+                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public Person show(int id) {
