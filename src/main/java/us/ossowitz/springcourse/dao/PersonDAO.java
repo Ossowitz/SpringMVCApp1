@@ -34,7 +34,7 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO spring_db.person VALUES (?, ?, ?, ?, ?)", person.getId(), person.getName(), person.getAge(),
+        jdbcTemplate.update("INSERT INTO spring_db.person (name, age, email, address) VALUES (?, ?, ?, ?)", person.getName(), person.getAge(),
                 person.getEmail(), person.getAddress());
     }
 
