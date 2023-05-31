@@ -9,7 +9,6 @@ import us.ossowitz.springcourse.models.Person;
 
 @Component
 public class PersonValidator implements Validator {
-
     private final PersonDAO personDAO;
 
     @Autowired

@@ -9,9 +9,8 @@ import us.ossowitz.springcourse.models.Person;
 import java.util.List;
 import java.util.Optional;
 
-@Component()
+@Component
 public class PersonDAO {
-
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -46,5 +45,4 @@ public class PersonDAO {
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM spring_db.person WHERE id=?", id);
     }
-
 }

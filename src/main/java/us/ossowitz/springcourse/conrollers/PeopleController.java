@@ -13,7 +13,6 @@ import us.ossowitz.springcourse.util.PersonValidator;
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
-
     private final PersonDAO personDAO;
     private final PersonValidator personValidator;
 
@@ -61,8 +60,6 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult, @PathVariable("id") int id) {
-        personValidator.validate(person, bindingResult);
-
         if (bindingResult.hasErrors())
             return "people/edit";
 

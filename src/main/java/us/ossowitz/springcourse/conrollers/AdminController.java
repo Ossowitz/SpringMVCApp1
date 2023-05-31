@@ -13,7 +13,6 @@ import us.ossowitz.springcourse.models.Person;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
     private PersonDAO personDAO;
 
     @Autowired
