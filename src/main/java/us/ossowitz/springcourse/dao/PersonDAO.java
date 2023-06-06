@@ -38,7 +38,7 @@ public class PersonDAO {
     }
 
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE spring_db.person SET name=?, age=?, email=?, adress=? WHERE id=?", updatedPerson.getName(),
+        jdbcTemplate.update("UPDATE spring_db.person SET name=?, age=?, email=?, address=? WHERE id=?", updatedPerson.getName(),
                 updatedPerson.getAge(), updatedPerson.getEmail(), updatedPerson.getAddress(), id);
     }
 
